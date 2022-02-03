@@ -10,14 +10,14 @@ import UserContextProvider from './contexts/UserContext';
 
 export default function App() {
   return (
-    <TabletContextProvider>
-      <UserContextProvider>
-        <ApolloProvider client={apolloClient}>
-          <SafeAreaProvider>
+    <ApolloProvider client={apolloClient}>
+      <SafeAreaProvider>
+        <TabletContextProvider>
+          <UserContextProvider>
             <Navigator />
-          </SafeAreaProvider>
-        </ApolloProvider>
-      </UserContextProvider>
-    </TabletContextProvider>
+          </UserContextProvider>
+        </TabletContextProvider>
+      </SafeAreaProvider>
+    </ApolloProvider>
   );
 }

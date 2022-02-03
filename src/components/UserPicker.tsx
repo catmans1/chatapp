@@ -6,12 +6,18 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import ModalDropdown from '../libs/DropDown/ModalDropdown';
 import useUser from '../hooks/useUser';
 import {UserList} from '../fakers';
+import {useEffect} from 'react';
 
 export default function UserPicker() {
-  const [value, setValue] = useState<string>(UserList[0]);
+  const {user, setUser} = useUser();
+
+  const [value, setValue] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
 
-  const {setUser} = useUser();
+  useEffect(() => {
+    const currentUser = user?.length > 0 ? user : UserList[0];
+    setValue(currentUser);
+  }, [user]);
 
   function onHandleSelect(_: string, option: string) {
     if (value !== option) {

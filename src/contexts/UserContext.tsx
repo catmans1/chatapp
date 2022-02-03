@@ -8,18 +8,18 @@ export const UserContext = createContext({
   setUser: (_: string) => {},
 });
 
-type IUser = {
+interface IUser {
   children: React.ReactChild;
-};
+}
 
 const UserContextProvider: React.FC<IUser> = ({children}) => {
   const [value, setValueState] = useState<string>('');
 
   const onHandleStore = (val: string) => {
+    setValueState(val);
     try {
       AsyncStorage.setItem(STORAGE_USER, val);
     } catch (error) {}
-    setValueState(val);
   };
 
   const getUser = async () => {

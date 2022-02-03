@@ -5,9 +5,9 @@ export const TabletContext = createContext({
   isTablet: false,
 });
 
-type ITablet = {
+interface ITablet {
   children: React.ReactChild;
-};
+}
 
 const TabletContextProvider: React.FC<ITablet> = ({children}) => {
   return (

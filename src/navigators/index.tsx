@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
@@ -15,14 +14,14 @@ export default function Navigator() {
     <NavigationContainer>
       <Drawer.Navigator
         defaultStatus="open"
-        drawerContent={SideBarMenu}
+        drawerContent={props => <SideBarMenu {...props} />}
         screenOptions={{
           drawerType: isTablet ? 'permanent' : 'slide',
           drawerStyle: isTablet ? null : {width: '100%'},
           overlayColor: 'transparent',
           swipeEnabled: false,
         }}>
-        <Drawer.Screen name="Home" component={HomeScreen} />
+        <Drawer.Screen name="HomeScreen" component={HomeScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

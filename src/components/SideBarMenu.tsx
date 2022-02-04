@@ -7,21 +7,18 @@ import {
 
 import {ChannelSectionList} from '../fakers';
 import UserPicker from './UserPicker';
+import SideBarItem from './SideBarItem';
 
 export default function SideBarMenu(props: DrawerContentComponentProps) {
-  const onPressItem = () => {
-    props.navigation.closeDrawer();
-  };
+  function onPressItem() {
+    props.navigation.toggleDrawer();
+  }
 
   function renderItem(title: string, item: string) {
     if (title === 'Switch User') {
       return <UserPicker key={item} />;
     }
-    return (
-      <ItemTouchable key={item} onPress={onPressItem}>
-        <ItemText># {item}</ItemText>
-      </ItemTouchable>
-    );
+    return <SideBarItem key={item} item={item} onPressItem={onPressItem} />;
   }
 
   function renderSectionHeader(title: string, data: string[]) {
@@ -61,18 +58,4 @@ const HeaderText = styled.Text`
   padding-bottom: 10px;
   padding-left: 10px;
   padding-right: 10px;
-`;
-
-const ItemTouchable = styled.TouchableOpacity`
-  flex: 1;
-  background-color: white;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-`;
-
-const ItemText = styled.Text`
-  font-size: 14px;
-  color: #212020;
 `;

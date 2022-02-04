@@ -7,6 +7,7 @@ import Navigator from './navigators';
 import apolloClient from './apolloClient';
 import TabletContextProvider from './contexts/TabletContext';
 import UserContextProvider from './contexts/UserContext';
+import ChannelContextProvider from './contexts/ChannelContext';
 
 export default function App() {
   return (
@@ -14,7 +15,9 @@ export default function App() {
       <SafeAreaProvider>
         <TabletContextProvider>
           <UserContextProvider>
-            <Navigator />
+            <ChannelContextProvider>
+              <Navigator />
+            </ChannelContextProvider>
           </UserContextProvider>
         </TabletContextProvider>
       </SafeAreaProvider>

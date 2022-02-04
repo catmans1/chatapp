@@ -7,6 +7,9 @@ const apolloClient = new ApolloClient({
   uri: config.API_URL,
   cache: new InMemoryCache(),
   defaultOptions: {watchQuery: {fetchPolicy: 'cache-and-network'}},
+  headers: {
+    Accept: 'application/json',
+  },
 });
 
 export default apolloClient;

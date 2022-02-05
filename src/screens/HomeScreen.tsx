@@ -10,8 +10,11 @@ import {useLazyQuery, useMutation} from '@apollo/client';
 import Icon from 'react-native-vector-icons/AntDesign';
 import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
-import {View, Text} from 'react-native';
-import ActionSheet, {SheetManager} from 'react-native-actions-sheet';
+import {
+  connectActionSheet,
+  useActionSheet,
+} from '@expo/react-native-action-sheet';
+
 import {
   MESSAGE_LATEST_QUERY,
   MESSAGE_MORE_QUERY,
@@ -30,7 +33,7 @@ import {
 } from '../utils/StoreUtils';
 import LogError from '../utils/LogError';
 
-export default function HomeScreen() {
+function HomeScreen() {
   const navigation = useNavigation();
   const {channel} = useChannel();
   const {user} = useUser();
@@ -70,6 +73,7 @@ export default function HomeScreen() {
   const [text, setText] = useState<string>('');
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [showLoadmore, setShowLoadmore] = useState<boolean>(true);
+  const {showActionSheetWithOptions} = useActionSheet();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -89,7 +93,7 @@ export default function HomeScreen() {
     } else {
       removeDraftMessage(user, channel);
     }
-  }, [text]);
+  }, [text]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     // listen channel, user change
@@ -99,7 +103,7 @@ export default function HomeScreen() {
       getMessage();
       onGetLatestMessage();
     }
-  }, [channel, user]);
+  }, [channel, user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     // listen latest message query
@@ -118,7 +122,7 @@ export default function HomeScreen() {
         LogError('Get Latest Message Error', latestMessageError);
       }
     }
-  }, [latestMessageCalled, latestMessageData, latestMessageLoading]);
+  }, [latestMessageCalled, latestMessageData, latestMessageLoading]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     // listen latest message query
@@ -139,7 +143,7 @@ export default function HomeScreen() {
         LogError('Get More Message Error', latestMessageError);
       }
     }
-  }, [moreMessagesCalled, moreMessagesData, moreMessagesLoading]);
+  }, [moreMessagesCalled, moreMessagesData, moreMessagesLoading]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (postMessageCalled && !postMessageLoading && postMessageData) {
@@ -155,7 +159,7 @@ export default function HomeScreen() {
         setMessages([...messages]);
       }
     }
-  }, [postMessageCalled, postMessageData, postMessageLoading]);
+  }, [postMessageCalled, postMessageData, postMessageLoading]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSend = useCallback(
     (newMessage = []) => {
@@ -167,7 +171,7 @@ export default function HomeScreen() {
       );
       onPostMessage(sendMessage);
     },
-    [user, channel],
+    [user, channel], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   function onGetLatestMessage() {
@@ -211,7 +215,24 @@ export default function HomeScreen() {
       <MessageContainer
         {...props}
         onOpenActionSheet={() => {
-          SheetManager.show('helloworld_sheet', {text: 'Hello World'});
+          if (props.currentMessage?.sent) {
+            showActionSheetWithOptions(
+              {
+                options: ['Cancel', 'Resend'],
+                cancelButtonIndex: 0,
+              },
+              buttonIndex => {
+                if (buttonIndex === 0) {
+                  // cancel action
+                } else if (buttonIndex === 1) {
+                  // Resend action
+                  if (props?.currentMessage) {
+                    onPostMessage(props?.currentMessage);
+                  }
+                }
+              },
+            );
+          }
         }}
       />
     );
@@ -219,10 +240,6 @@ export default function HomeScreen() {
 
   function onLoadMoreMessages() {
     LogError('load more messages in channel');
-    console.log(
-      'messages[messages.length-1]._id',
-      messages[messages.length - 1]._id,
-    );
     getMoreMessages({
       variables: {
         channelId: channel,
@@ -233,39 +250,34 @@ export default function HomeScreen() {
   }
 
   return (
-    <View style={{flex: 1}}>
-      <GiftedChat
-        ref={giftChatRef}
-        text={text}
-        onInputTextChanged={setText}
-        messages={messages}
-        onSend={onSend}
-        user={{
-          _id: user,
-          name: user,
-          avatar: transformUserAvatar(user),
-        }}
-        loadEarlier={showLoadmore}
-        isLoadingEarlier={moreMessagesLoading}
-        onLoadEarlier={onLoadMoreMessages}
-        showAvatarForEveryMessage
-        scrollToBottom
-        renderAvatarOnTop
-        renderUsernameOnMessage
-        scrollToBottomComponent={() => (
-          <Icon name="down" size={20} color="#000" />
-        )}
-        renderMessage={renderMessage}
-      />
-      <ActionSheet id="helloworld_sheet">
-        <View>
-          <Text>Hello World</Text>
-        </View>
-      </ActionSheet>
-    </View>
+    <GiftedChat
+      ref={giftChatRef}
+      text={text}
+      onInputTextChanged={setText}
+      messages={messages}
+      onSend={onSend}
+      user={{
+        _id: user,
+        name: user,
+        avatar: transformUserAvatar(user),
+      }}
+      loadEarlier={showLoadmore}
+      isLoadingEarlier={moreMessagesLoading}
+      onLoadEarlier={onLoadMoreMessages}
+      showAvatarForEveryMessage
+      scrollToBottom
+      renderAvatarOnTop
+      renderUsernameOnMessage
+      scrollToBottomComponent={() => (
+        <Icon name="down" size={20} color="#000" />
+      )}
+      renderMessage={renderMessage}
+    />
   );
 }
 
 const StyleTouchableIcon = styled.TouchableOpacity`
   padding: 5px;
 `;
+
+export default connectActionSheet(HomeScreen);

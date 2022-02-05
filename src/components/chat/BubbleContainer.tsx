@@ -14,7 +14,7 @@ interface IBubbleContainer extends MessageProps<IMessage> {
 }
 
 export default function BubbleContainer(props: IBubbleContainer) {
-  const isSameUser = props.currentMessage?.user._id == props.user._id;
+  const isSameUser = props.currentMessage?.user._id === props.user._id;
 
   function renderMessageText() {
     if (props.currentMessage?.text) {
@@ -67,7 +67,7 @@ export default function BubbleContainer(props: IBubbleContainer) {
               name="checkcircle"
               size={12}
               color="#2ecc71"
-              style={{marginRight: 5}}
+              style={styles.tickStyle}
             />
             <TickText>Sent</TickText>
           </>
@@ -77,7 +77,7 @@ export default function BubbleContainer(props: IBubbleContainer) {
               name="exclamationcircle"
               size={12}
               color="#e74c3c"
-              style={{marginRight: 5}}
+              style={styles.tickStyle}
             />
             <TickText>Error</TickText>
           </>
@@ -125,6 +125,9 @@ const styles = StyleSheet.create({
   timeText: {
     fontSize: 10,
     color: 'black',
+  },
+  tickStyle: {
+    marginRight: 5,
   },
 });
 

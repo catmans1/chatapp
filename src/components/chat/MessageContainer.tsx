@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import {Avatar, Day, MessageProps, IMessage} from 'react-native-gifted-chat';
 
 import BubbleContainer from './BubbleContainer';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 interface IMessageContainer extends MessageProps<IMessage> {
   onOpenActionSheet: () => void;

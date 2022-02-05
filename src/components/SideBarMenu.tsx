@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
-  DrawerItem,
 } from '@react-navigation/drawer';
 
 import {ChannelSectionList} from '../fakers';

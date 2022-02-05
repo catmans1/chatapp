@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  animated={true}
+  defaultIndex={-1}
+  defaultValue=""
+  disabled={false}
+  dropdownStyle={
+    Object {
+      "borderColor": "#c4c0c0",
+      "borderRadius": 6,
+      "borderWidth": 1,
+      "height": 120,
+      "justifyContent": "center",
+      "marginLeft": -10,
+      "marginTop": 15,
+      "width": "95%",
+    }
+  }
+  isFullWidth={false}
+  keySearchObject="label"
+  keyboardShouldPersistTaps="never"
+  multipleSelect={false}
+  numberOfLines={1}
+  onDropdownWillHide={[Function]}
+  onDropdownWillShow={[Function]}
+  onSelect={[Function]}
+  options={
+    Array [
+      "Joyse",
+      "Russell",
+      "Sam",
+    ]
+  }
+  renderButtonComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    }
+  }
+  renderRightComponent={[Function]}
+  renderRow={[Function]}
+  renderRowComponent={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    }
+  }
+  saveScrollPosition={true}
+  scrollEnabled={true}
+  searchPlaceholder="Search"
+  showSearch={false}
+  showsVerticalScrollIndicator={true}
+  style={
+    Object {
+      "borderColor": "#c4c0c0",
+      "borderRadius": 6,
+      "borderWidth": 1,
+      "flex": 1,
+      "height": 40,
+      "justifyContent": "center",
+      "marginHorizontal": 10,
+      "marginVertical": 10,
+      "paddingHorizontal": 10,
+      "paddingVertical": 10,
+    }
+  }
+  textStyle={
+    Object {
+      "color": "black",
+      "flex": 1,
+      "fontSize": 16,
+    }
+  }
+>
+  <View
+    accessibilityState={
+      Object {
+        "disabled": false,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    forwardedRef={[Function]}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontSize": 12,
+            },
+            Array [
+              Object {
+                "color": "black",
+                "flex": 1,
+                "fontSize": 16,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        allowFontScaling={false}
+        style={
+          Array [
+            Object {
+              "color": undefined,
+              "fontSize": 14,
+            },
+            undefined,
+            Object {
+              "fontFamily": "anticon",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            Object {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+  </View>
+</View>
+`;

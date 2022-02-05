@@ -30,17 +30,3 @@ export function transformMessage(message: IMessageLocal): IMessage {
   };
   return newMessage;
 }
-
-export function updateMessage(
-  messages: IMessage[],
-  messageFrom: IMessageLocal,
-): IMessage[] {
-  const newMessage = messages.filter(item => {
-    if (item?.user?._id === messageFrom.userId) {
-      item._id = messageFrom.messageId;
-      item.pending = false;
-      item.sent = true;
-    }
-  });
-  return newMessage;
-}

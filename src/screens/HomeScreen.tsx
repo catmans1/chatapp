@@ -23,6 +23,7 @@ import {POST_MESSAGE} from '../graphQL/mutations/MessageMutations';
 
 import useChannel from '../hooks/userChannel';
 import useUser from '../hooks/useUser';
+import useTablet from '../hooks/useTablet';
 import IMessageLocal from '../interfaces/IMessageLocal';
 import MessageContainer from '../components/chat/MessageContainer';
 import {transformMessage, transformUserAvatar} from '../utils/MessageUtils';
@@ -37,6 +38,7 @@ function HomeScreen() {
   const navigation = useNavigation();
   const {channel} = useChannel();
   const {user} = useUser();
+  const {isTablet} = useTablet();
 
   const giftChatRef: any = useRef();
 
@@ -77,14 +79,17 @@ function HomeScreen() {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (
-        <StyleTouchableIcon onPress={() => navigation.goBack()}>
-          <Icon name="left" size={20} />
-        </StyleTouchableIcon>
-      ),
+      headerLeft: () => {
+        if (isTablet) return;
+        return (
+          <StyleTouchableIcon onPress={() => navigation.goBack()}>
+            <Icon name="left" size={20} />
+          </StyleTouchableIcon>
+        );
+      },
       title: channel,
     });
-  }, [navigation, channel]);
+  }, [navigation, channel, isTablet]);
 
   useEffect(() => {
     // listen message input and store draft message
@@ -215,7 +220,7 @@ function HomeScreen() {
       <MessageContainer
         {...props}
         onOpenActionSheet={() => {
-          if (props.currentMessage?.sent) {
+          if (!props.currentMessage?.sent) {
             showActionSheetWithOptions(
               {
                 options: ['Cancel', 'Resend'],

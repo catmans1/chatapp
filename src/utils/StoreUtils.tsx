@@ -9,9 +9,7 @@ export function storeDraftMessage(
 ) {
   const keyStore = STORAGE_DRAFT_MESSAGE + user + channel;
   try {
-    try {
-      AsyncStorage.setItem(keyStore, message);
-    } catch (error) {}
+    AsyncStorage.setItem(keyStore, message);
   } catch (error) {}
 }
 

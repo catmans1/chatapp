@@ -1,14 +1,33 @@
-import {ApolloClient, InMemoryCache} from '@apollo/client';
+import {ApolloClient, InMemoryCache, HttpLink, from} from '@apollo/client';
+import {onError} from '@apollo/client/link/error';
 
 import config from './config';
 
-// Initialize Apollo Client
-const apolloClient = new ApolloClient({
+const httpLink = new HttpLink({
   uri: config.API_URL,
-  cache: new InMemoryCache(),
-  defaultOptions: {watchQuery: {fetchPolicy: 'cache-and-network'}},
   headers: {
     Accept: 'application/json',
+  },
+});
+
+const errorLink = onError(({graphQLErrors, networkError}) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({message, locations, path}) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+      ),
+    );
+
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
+// Initialize Apollo Client
+const apolloClient = new ApolloClient({
+  link: from([errorLink, httpLink]),
+  cache: new InMemoryCache(),
+  defaultOptions: {
+    watchQuery: {fetchPolicy: 'cache-and-network'},
+    mutate: {errorPolicy: 'all'},
   },
 });
 

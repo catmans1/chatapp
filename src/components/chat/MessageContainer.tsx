@@ -3,8 +3,13 @@ import styled from 'styled-components/native';
 import {Avatar, Day, MessageProps, IMessage} from 'react-native-gifted-chat';
 
 import BubbleContainer from './BubbleContainer';
+import {StyleSheet, View, Text} from 'react-native';
 
-export default function MessageContainer(props: MessageProps<IMessage>) {
+interface IMessageContainer extends MessageProps<IMessage> {
+  onOpenActionSheet: () => void;
+}
+
+export default function MessageContainer(props: IMessageContainer) {
   function renderDay() {
     if (props.currentMessage?.createdAt) {
       return <Day {...props} />;
@@ -21,11 +26,21 @@ export default function MessageContainer(props: MessageProps<IMessage>) {
   }
 
   function renderAvatar() {
-    return <Avatar {...props} />;
+    return (
+      <Avatar
+        {...props}
+        imageStyle={{
+          left: [styles.avatarImageLeft],
+          right: [styles.avatarImageRight],
+        }}
+      />
+    );
   }
 
   function renderBubble() {
-    return <BubbleContainer {...props} />;
+    return (
+      <BubbleContainer {...props} onLongPress={props?.onOpenActionSheet} />
+    );
   }
 
   function renderLeftSide() {
@@ -58,6 +73,7 @@ export default function MessageContainer(props: MessageProps<IMessage>) {
   return (
     <>
       {renderDay()}
+
       <Container isSameUserMessage={isSameUserMessage}>
         {sameUser ? renderRightSide() : renderLeftSide()}
       </Container>
@@ -65,11 +81,27 @@ export default function MessageContainer(props: MessageProps<IMessage>) {
   );
 }
 
+const styles = StyleSheet.create({
+  avatarImageLeft: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    marginLeft: 8,
+    marginBottom: 2,
+  },
+  avatarImageRight: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    marginRight: 8,
+    marginBottom: 2,
+  },
+});
+
 const Container = styled.View`
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-  margin-left: 8px;
   margin-bottom: ${(props: {isSameUserMessage: boolean}) =>
     props.isSameUserMessage ? '8px' : '15px'};
 `;
@@ -83,5 +115,4 @@ const AvatarView = styled.View`
   justify-content: center;
   align-content: center;
   align-items: center;
-  margin-right: 10px;
 `;

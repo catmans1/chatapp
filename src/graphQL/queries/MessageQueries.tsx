@@ -5,12 +5,10 @@ import {MessageFragment} from '../fragments/MessageFragments';
 export const MESSAGE_LATEST_QUERY = gql`
   query FetchLatestMessages($channelId: String!) {
     fetchLatestMessages(channelId: $channelId) {
-      messageId
-      text
-      datetime
-      userId
+      ...MessageData
     }
   }
+  ${MessageFragment}
 `;
 
 export const MESSAGE_MORE_QUERY = gql`

@@ -1,4 +1,4 @@
-type IEnv = {
+interface IEnv {
   API_URL: string;
 };
 

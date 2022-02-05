@@ -9,10 +9,12 @@ import {
 import {StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-export default function BubbleContainer(props: MessageProps<IMessage>) {
-  const isSameUser = props.currentMessage?.user._id == props.user._id;
+interface IBubbleContainer extends MessageProps<IMessage> {
+  onLongPress: () => void;
+}
 
-  function onLongPress() {}
+export default function BubbleContainer(props: IBubbleContainer) {
+  const isSameUser = props.currentMessage?.user._id == props.user._id;
 
   function renderMessageText() {
     if (props.currentMessage?.text) {
@@ -49,6 +51,13 @@ export default function BubbleContainer(props: MessageProps<IMessage>) {
   function renderTicks() {
     if (props.currentMessage?.user._id !== props.user._id) {
       return null;
+    }
+    if (props.currentMessage.pending) {
+      return (
+        <TickView>
+          <TickText>Sending</TickText>
+        </TickView>
+      );
     }
     return (
       <TickView>
@@ -101,7 +110,7 @@ export default function BubbleContainer(props: MessageProps<IMessage>) {
   }
 
   return (
-    <TouchableView isSameUser={isSameUser} onLongPress={onLongPress}>
+    <TouchableView isSameUser={isSameUser} onLongPress={props?.onLongPress}>
       {isSameUser ? renderRightSide() : renderLeftSide()}
     </TouchableView>
   );
@@ -130,7 +139,7 @@ const TouchableView = styled.TouchableOpacity`
 
 const WrapperView = styled.View`
   min-height: 20px;
-  max-width: 70%;
+  max-width: 68%;
   background-color: white;
   border-radius: 6px;
 `;

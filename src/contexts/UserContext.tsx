@@ -24,7 +24,7 @@ const UserContextProvider: React.FC<IUser> = ({children}) => {
 
   const getUser = async () => {
     const user = await AsyncStorage.getItem(STORAGE_USER);
-    setValueState(user || '');
+    setValueState(user || 'Joyse');
   };
 
   useEffect(() => {

@@ -74,13 +74,15 @@ function HomeScreen() {
 
   const [text, setText] = useState<string>('');
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const [showLoadmore, setShowLoadmore] = useState<boolean>(true);
+  const [showLoadmore, setShowLoadmore] = useState<boolean>(false);
   const {showActionSheetWithOptions} = useActionSheet();
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => {
-        if (isTablet) return;
+        if (isTablet) {
+          return;
+        }
         return (
           <StyleTouchableIcon onPress={() => navigation.goBack()}>
             <Icon name="left" size={20} />
@@ -114,15 +116,15 @@ function HomeScreen() {
     // listen latest message query
     if (latestMessageCalled && !latestMessageLoading && latestMessageData) {
       if (latestMessageData?.fetchLatestMessages) {
-        const lastMes = latestMessageData?.fetchLatestMessages;
-        const newMessage: IMessage[] = [];
-        lastMes.forEach((item: IMessageLocal) => {
-          newMessage.push(transformMessage(item));
-        });
-        if (lastMes.length < 10) {
-          setShowLoadmore(false);
+        const lastMes = latestMessageData?.fetchLatestMessages?.map(
+          (item: IMessageLocal) => {
+            return transformMessage(item);
+          },
+        );
+        if (lastMes.length > 10) {
+          setShowLoadmore(true);
         }
-        setMessages(previous => [...previous, ...newMessage]);
+        setMessages(previous => [...previous, ...lastMes]);
       } else if (latestMessageError) {
         LogError('Get Latest Message Error', latestMessageError);
       }
@@ -133,17 +135,17 @@ function HomeScreen() {
     // listen latest message query
     if (moreMessagesCalled && !moreMessagesLoading && moreMessagesData) {
       if (moreMessagesData?.fetchMoreMessages) {
-        const moreMes = moreMessagesData?.fetchMoreMessages;
-        const newMessage: IMessage[] = [];
-        moreMes.forEach((item: IMessageLocal) => {
-          newMessage.push(transformMessage(item));
-        });
+        const moreMes = moreMessagesData?.fetchMoreMessages?.map(
+          (item: IMessageLocal) => {
+            return transformMessage(item);
+          },
+        );
         if (moreMes.length < 10) {
           setShowLoadmore(false);
         } else {
           setShowLoadmore(true);
         }
-        setMessages(previous => [...previous, ...newMessage]);
+        setMessages(previous => [...previous, ...moreMes]);
       } else if (moreMessagesError) {
         LogError('Get More Message Error', latestMessageError);
       }
@@ -153,11 +155,15 @@ function HomeScreen() {
   useEffect(() => {
     if (postMessageCalled && !postMessageLoading && postMessageData) {
       if (postMessageData?.postMessage) {
+        // BUG MAY BE HAPPEN
+        // MUST COMPARE MESSAGE_ID
         messages[0]._id = postMessageData?.postMessage?.messageId;
         messages[0].sent = true;
         messages[0].pending = false;
         setMessages([...messages]);
       } else if (postMessageError) {
+        // BUG MAY BE HAPPEN
+        // MUST COMPARE MESSAGE_ID
         LogError('Post Message Error', postMessageError);
         messages[0].sent = false;
         messages[0].pending = false;
@@ -245,13 +251,15 @@ function HomeScreen() {
 
   function onLoadMoreMessages() {
     LogError('load more messages in channel');
-    getMoreMessages({
-      variables: {
-        channelId: channel,
-        messageId: messages[messages.length - 1]._id,
-        old: true,
-      },
-    });
+    if (messages.length > 0) {
+      getMoreMessages({
+        variables: {
+          channelId: channel,
+          messageId: messages[messages.length - 1]._id,
+          old: true,
+        },
+      });
+    }
   }
 
   return (
@@ -286,3 +294,5 @@ const StyleTouchableIcon = styled.TouchableOpacity`
 `;
 
 export default connectActionSheet(HomeScreen);
+
+//https://stackoverflow.com/questions/67782975/how-to-fix-the-module-java-base-does-not-opens-java-io-to-unnamed-module

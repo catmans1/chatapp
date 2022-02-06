@@ -5,3 +5,16 @@ on:
   push:
     branches-ignore:
       - '**'
+jobs:
+  install-and-test:
+    runs-on: macOS-latest
+  steps: 
+      - uses: actions/checkout@v2
+      - name: Install yarn dependencies
+        run: |
+          yarn install
+      - name: Run tests
+        run: |
+          yarn test
+      - name: Check Format
+        run: yarn lint

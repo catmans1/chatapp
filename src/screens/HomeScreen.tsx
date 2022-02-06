@@ -121,7 +121,7 @@ function HomeScreen() {
             return transformMessage(item);
           },
         );
-        if (lastMes.length > 10) {
+        if (lastMes.length >= 10) {
           setShowLoadmore(true);
         }
         setMessages(previous => [...previous, ...lastMes]);

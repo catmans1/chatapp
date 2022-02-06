@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Avatar, Day, MessageProps, IMessage} from 'react-native-gifted-chat';
+import {Avatar, MessageProps, IMessage} from 'react-native-gifted-chat';
 
 import BubbleContainer from './BubbleContainer';
 import {StyleSheet} from 'react-native';
@@ -10,12 +10,12 @@ interface IMessageContainer extends MessageProps<IMessage> {
 }
 
 export default function MessageContainer(props: IMessageContainer) {
-  function renderDay() {
-    if (props.currentMessage?.createdAt) {
-      return <Day {...props} />;
-    }
-    return null;
-  }
+  // function renderDay() {
+  //   if (props.currentMessage?.createdAt) {
+  //     return <Day {...props} />;
+  //   }
+  //   return null;
+  // }
 
   function renderUsername() {
     const username = props.currentMessage?.user.name;
@@ -72,7 +72,7 @@ export default function MessageContainer(props: IMessageContainer) {
 
   return (
     <>
-      {renderDay()}
+      {/* {renderDay()} */}
 
       <Container isSameUserMessage={isSameUserMessage}>
         {sameUser ? renderRightSide() : renderLeftSide()}

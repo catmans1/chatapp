@@ -186,30 +186,22 @@ function HomeScreen() {
   );
 
   function onGetLatestMessage() {
-    try {
-      getLatestMessage({
-        variables: {
-          channelId: channel,
-        },
-      });
-    } catch (error) {
-      LogError('Get Latest Message Catch Error', error);
-    }
+    getLatestMessage({
+      variables: {
+        channelId: channel,
+      },
+    });
   }
 
   function onPostMessage(message: IMessage) {
     if (channel?.length > 0 && user?.length > 0) {
-      try {
-        postMessage({
-          variables: {
-            channelId: channel,
-            text: message.text,
-            userId: user,
-          },
-        });
-      } catch (error) {
-        LogError('Post Message Catch Error', error);
-      }
+      postMessage({
+        variables: {
+          channelId: channel,
+          text: message.text,
+          userId: user,
+        },
+      });
     }
   }
 

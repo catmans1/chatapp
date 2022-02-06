@@ -1,31 +1,48 @@
+# name: Build Test App
+
+# on:
+#   # Triggers the workflow on push or pull request events but only for the main branch
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
+
+# jobs:
+#   build:
+#     runs-on: macOS-latest
+#   strategy:
+#       matrix:
+#         node-version: [12.x, 14.x, 16.x]
+#         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Use Node.js ${{ matrix.node-version }}
+#       uses: actions/setup-node@v2
+#       with:
+#         node-version: ${{ matrix.node-version }}
+#     - name: Install yarn
+#       run: npm install -g yarn
+#     - name: Install dependencies
+#       run: yarn install
+#     - name: Check Format
+#       run: yarn lint
+#     - name: Build Test
+#       run: yarn test
+
 name: Build Test App
-
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
+    branches:
+      - main
 jobs:
-  build:
+  install-and-test:
     runs-on: macOS-latest
-  strategy:
-      matrix:
-        node-version: [12.x, 14.x, 16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install yarn
-      run: npm install -g yarn
-    - name: Install dependencies
-      run: yarn install
-    - name: Check Format
-      run: yarn lint
-    - name: Build Test
-      run: yarn test
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Install yarn dependencies
+        run: |
+          yarn install
+      - name: Run tests
+        run: |
+          yarn test

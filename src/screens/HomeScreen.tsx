@@ -286,5 +286,3 @@ const StyleTouchableIcon = styled.TouchableOpacity`
 `;
 
 export default connectActionSheet(HomeScreen);
-
-//https://stackoverflow.com/questions/67782975/how-to-fix-the-module-java-base-does-not-opens-java-io-to-unnamed-module
